@@ -12,8 +12,7 @@ function whoIsOnCall(pStartDate, pDate, pPattern, pGroup) {
   //   const totalDuration = pPattern.reduce((a, b) => a + b, 0);
   const daysPassed = Math.floor((pDate - pStartDate) / (1000 * 60 * 60 * 24));
   let currentWeek = daysPassed == 0 ? 1 : Math.ceil((daysPassed + 1) / 7) % 4;
-  const dayInTheWeek = (daysPassed % 7) + 1;
-
+  let dayInTheWeek = daysPassed % 7;
   if (daysPassed == 0) {
     return pGroup[0];
   }
@@ -23,15 +22,17 @@ function whoIsOnCall(pStartDate, pDate, pPattern, pGroup) {
   let totalDays = 0;
   let indexPerson = 0;
 
-  for (let i = 0; i <= pPattern.length; i++) {
+  for (let i = 1; i <= pPattern.length; i++) {
 
-    totalDays += pPattern[i];
+    totalDays += pPattern[i - 1];
 
+    // Valida en que sector del patrón se encuentra
     if (dayInTheWeek <= totalDays) {
-        
+
       const patternLongitude = pPattern.length;
       indexPerson =
-        ((currentWeek * patternLongitude) - (patternLongitude - (i + 1) )) % pGroup.length;
+        (currentWeek * patternLongitude - (patternLongitude - i)) %
+        pGroup.length;
 
       if (indexPerson == 0) {
         indexPerson = 4;
@@ -42,6 +43,7 @@ function whoIsOnCall(pStartDate, pDate, pPattern, pGroup) {
   }
 
   const result = pGroup[indexPerson - 1];
+  indexPerson = 0;
   return result;
 }
 
@@ -82,7 +84,6 @@ let myGroup = ['Max','Paula','Roger','Daniela'];
 
 
 let vTestDateArr = [new Date(2021, 7, 16),new Date(2021, 7, 23), new Date(2021, 7, 28),new Date(2021, 8, 8),new Date(2021, 8, 12)];
-
 
 
 for (let i = 0; i < vTestDateArr.length; i++){
