@@ -10,6 +10,9 @@ function whoIsOnCall(pStartDate, pDate, pPattern, pGroup) {
   }
 
   //   const totalDuration = pPattern.reduce((a, b) => a + b, 0);
+  //   if (totalDuration < 7) {
+  //     return "Error: The pattern must cover all days of the week (7).";
+  //   }
   const daysPassed = Math.floor((pDate - pStartDate) / (1000 * 60 * 60 * 24));
   let currentWeek = daysPassed == 0 ? 1 : Math.ceil((daysPassed + 1) / 7) % 4;
   const dayInTheWeek = (daysPassed % 7) + 1;
@@ -26,10 +29,11 @@ function whoIsOnCall(pStartDate, pDate, pPattern, pGroup) {
   for (let i = 0; i <= pPattern.length; i++) {
 
     totalDays += pPattern[i];
-
+    // Valida en que sector del patrón se encuentra el dia consultado
     if (dayInTheWeek <= totalDays) {
         
       const patternLongitude = pPattern.length;
+      // obtiene el indice de la persona a la cual le corresponde el turno (i)
       indexPerson =
         ((currentWeek * patternLongitude) - (patternLongitude - (i + 1) )) % pGroup.length;
 
@@ -63,7 +67,7 @@ let vStartDate = new Date(2021, 7, 16);
 
 
 
-let myPattern = [2, 2, 3];
+let myPattern = [2, 2, 2];
 
 
 
