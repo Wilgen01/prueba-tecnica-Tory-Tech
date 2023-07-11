@@ -67,7 +67,7 @@ let vStartDate = new Date(2021, 7, 16);
 
 
 
-let myPattern = [2, 2, 2];
+let myPattern = [2, 2, 3];
 
 
 
