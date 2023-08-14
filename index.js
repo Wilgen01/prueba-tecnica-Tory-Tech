@@ -5,48 +5,9 @@ process.stdin.setEncoding('utf8');
 
 
 function whoIsOnCall(pStartDate, pDate, pPattern, pGroup) {
-  if (pDate < pStartDate) {
-    return "Error: Invalid date";
-  }
-
-  //   const totalDuration = pPattern.reduce((a, b) => a + b, 0);
-  //   if (totalDuration < 7) {
-  //     return "Error: The pattern must cover all days of the week (7).";
-  //   }
-  const daysPassed = Math.floor((pDate - pStartDate) / (1000 * 60 * 60 * 24));
-  let currentWeek = daysPassed == 0 ? 1 : Math.ceil((daysPassed + 1) / 7) % 4;
-  const dayInTheWeek = (daysPassed % 7) + 1;
-
-  if (daysPassed == 0) {
-    return pGroup[0];
-  }
-
-  currentWeek = currentWeek == 0 ? 4 : currentWeek;
-
-  let totalDays = 0;
-  let indexPerson = 0;
-
-  for (let i = 0; i <= pPattern.length; i++) {
-
-    totalDays += pPattern[i];
-    // Valida en que sector del patrón se encuentra el dia consultado
-    if (dayInTheWeek <= totalDays) {
-        
-      const patternLongitude = pPattern.length;
-      // obtiene el indice de la persona a la cual le corresponde el turno (i)
-      indexPerson =
-        ((currentWeek * patternLongitude) - (patternLongitude - (i + 1) )) % pGroup.length;
-
-      if (indexPerson == 0) {
-        indexPerson = 4;
-      }
-
-      break;
-    }
-  }
-
-  const result = pGroup[indexPerson - 1];
-  return result;
+  const date = new Date(pStartDate.getTime() + 86400000 * pPattern[0])
+  if (date > pDate) return pGroup[0];  
+  return whoIsOnCall(date, pDate, [...pPattern.slice(1), pPattern[0]], [...pGroup.slice(1), pGroup[0]]);
 }
 
 
@@ -55,7 +16,7 @@ function whoIsOnCall(pStartDate, pDate, pPattern, pGroup) {
 
 
 
-let vStartDate = new Date(2021, 7, 16);
+let vStartDate = new Date(2021, 1, 1);
 
 
 
@@ -85,7 +46,7 @@ let myGroup = ['Max','Paula','Roger','Daniela'];
 
 
 
-let vTestDateArr = [new Date(2021, 7, 16),new Date(2021, 7, 23), new Date(2021, 7, 28),new Date(2021, 8, 8),new Date(2021, 8, 12)];
+let vTestDateArr = [new Date(2021, 1, 1),new Date(2021, 1, 3), new Date(2021, 1, 8),new Date(2021, 1, 24),new Date(2021, 1, 28)];
 
 
 
